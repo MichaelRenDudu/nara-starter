@@ -487,4 +487,63 @@ input[type="checkbox"]:checked+.task-text {
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     opacity: 0.95;
     animation: welcomeFadeIn 1s ease-out forwards;
-    }
+    }/* ——— Speech Bubble Encouragement ——— */
+
+/* The bubble container */
+.speech-bubble {
+    position: absolute;
+    max-width: 180px;
+    padding: 8px 12px;
+    background: #fff;
+    border: 2px solid #444;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    color: #222;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    pointer-events: none; /* clicks pass through */
+  }
+  
+  /* The little “tail” under the bubble */
+  .speech-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 20px;
+    border-width: 10px 10px 0 0;
+    border-style: solid;
+    border-color: #fff transparent;
+    display: block;
+    width: 0;
+    height: 0;
+  }
+  
+  /* When this class is added, the bubble fades away */
+  .speech-bubble.fade-out {
+    opacity: 0;
+  } /* ——— Inspirational Quote Overlay ——— */
+
+  .quote-overlay {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    max-width: 250px;
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-style: italic;
+    z-index: 1000;
+    pointer-events: none; /* let clicks pass through */
+  }
+  
+  .quote-overlay .author {
+    display: block;
+    margin-top: 4px;
+    text-align: right;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  

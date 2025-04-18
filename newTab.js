@@ -1,5 +1,80 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const backgroundContainer = document.createElement("div");
+  const backgroundContainer = document.createElement("div");// ——— Speech Bubble Encouragement ———
+  const encouragementMessages = [
+    "Great job!",
+    "You’re making progress!",
+    "Keep going!",
+    "Well done!",
+    "Fantastic!",
+  ];
+  
+  /**
+   * showSpeechBubble: pops a brief bubble near the deer when a task is checked
+   * @param {string} category  the current category (matches your renderTasks arg)
+   */
+  function showSpeechBubble(category) {
+    const text = encouragementMessages[
+      Math.floor(Math.random() * encouragementMessages.length)
+    ];
+  
+    const bubble = document.createElement("div");
+    bubble.className = "speech-bubble";
+    bubble.textContent = text;
+  
+    // find the circle element for this category
+    const circleEl = document.querySelector(
+      `.deer-circle[data-category="${category}"]`
+    ) || document.getElementById(`${category}-circle`);
+  
+    if (circleEl) {
+      const rect = circleEl.getBoundingClientRect();
+      bubble.style.left = `${rect.left}px`;
+      bubble.style.top  = `${rect.top - rect.height * 0.6}px`;
+    } else {
+      // fallback corner
+      bubble.style.top   = "20px";
+      bubble.style.right = "20px";
+    }
+  
+    document.body.appendChild(bubble);
+  
+    // fade and remove
+    setTimeout(() => bubble.classList.add("fade-out"), 1000);
+    bubble.addEventListener("transitionend", () => bubble.remove());
+  }
+  // ——————————————————————————————————————  // ——— Inspirational Quote Overlay ———
+
+  // 1) Define an array of quotes
+  const quotes = [
+    { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+    { text: "Life shrinks or expands in proportion to one’s courage.", author: "Anaïs Nin" },
+    { text: "What you get by achieving your goals is not as important as what you become by achieving your goals.", author: "Zig Ziglar" },
+    { text: "Believe you can and you’re halfway there.", author: "Theodore Roosevelt" },
+    { text: "You are braver than you believe, stronger than you seem, and smarter than you think.", author: "A.A. Milne" }
+  ];
+
+  /**
+   * showQuoteOverlay — picks & displays a random quote in the top‑right corner
+   */
+  function showQuoteOverlay() {
+    // choose one at random
+    const { text, author } = quotes[Math.floor(Math.random() * quotes.length)];
+
+    // build the DOM node
+    const overlay = document.createElement("div");
+    overlay.className = "quote-overlay";
+    overlay.innerHTML = `
+      ${text}
+      ${author ? `<span class="author">— ${author}</span>` : ""}
+    `;
+
+    // append to page
+    document.body.appendChild(overlay);
+  }
+  // ————————————————————————————————
+
+  
+  
   backgroundContainer.className = "background-container";
   document.body.appendChild(backgroundContainer);
 
@@ -668,7 +743,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const checkbox = taskItem.querySelector("input[type='checkbox']");
       checkbox.addEventListener("change", () => {
         const originalIndex = tasks.indexOf(task);
-        tasks[originalIndex].completed = checkbox.checked;
+        tasks[originalIndex].completed = checkbox.checked;// NEW: show encouragement whenever a task is checked
+        if (checkbox.checked) {
+          showSpeechBubble(category);
+        }
+        
 
         if (tasks[originalIndex].completed) {
           const deleteButton = taskItem.querySelector(".delete-task");
@@ -949,4 +1028,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tasksContainer.classList.remove("hidden");
   }
+  showQuoteOverlay();
 });
